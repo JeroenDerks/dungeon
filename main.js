@@ -19,11 +19,25 @@ function init() {
 
   let playing = false;
   let mixer;
+  let defaultAnimation;
+
   const clock = new THREE.Clock();
+  const times = [0, 3];
+  const values = Array.from({ length: 520 }, () => Math.random());
+
+  const customTrack = new THREE.NumberKeyframeTrack("mesh_2.morphTargetInfluences", times, values);
+  const customClip = new THREE.AnimationClip("blink", -1, [customTrack]);
 
   const container = document.createElement('div');
   document.body.appendChild(container);
 
+
+  // const randomKeyFrames = new THREE.NumberKeyframeTrack(
+  //   "mesh_2.morphTargetInfluences",
+  //  
+  //   Array.from({ length: 520 }, Math.random()));
+
+  // const randomClip = new THREE.AnimationClip('random', 10, randomKeyFrames)
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20);
   camera.position.set(- 1.8, 0.8, 3);
 
@@ -46,14 +60,19 @@ function init() {
     .setMeshoptDecoder(MeshoptDecoder)
     .load('/facecap.glb', (gltf) => {
 
-      console.log(gltf)
+      console.log('gltf', gltf)
 
       const mesh = gltf.scene.children[0];
       scene.add(mesh);
+      console.log('mesh', mesh)
 
+
+
+      defaultAnimation = gltf.animations[0]
+      console.log(customClip)
       mixer = new THREE.AnimationMixer(mesh);
-      mixer.clipAction(gltf.animations[0]).play();
-      mixer.timeScale = 0;
+      mixer.clipAction(customClip).play();
+      mixer.timeScale = 1;
       // GUI
 
       const head = mesh.getObjectByName('mesh_2');
@@ -113,7 +132,21 @@ function init() {
   });
 
   document.getElementById("playButton").addEventListener("mousedown", function () {
-    mixer.timeScale = playing ? '0' : '1';
+    let animation
+    console.log('clicked')
+    if (playing) {
+      console.log('show play default')
+      animation = mixer.clipAction(defaultAnimation)
+    }
+    else {
+      console.log('show play custom')
+      animation = mixer.clipAction(customClip);
+    }
+    animation.setLoop(THREE.LoopOnce);
+    animation.clampWhenFinished = true;
+    animation.enable = true;
+
+    animation.reset().play();
     playing = !playing;
   });
 
