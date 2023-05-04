@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My first three.js app</title>
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>My first three.js app</title>
-  <style>
-    body {
-      margin: 0;
-    }
-  </style>
-</head>
+  <body>
+    <script type="module" src="/eventListeners.js"></script>
+    <script type="module" src="/main.js"></script>
+    <button style="position: fixed; left: 200px; z-index: 2" id="playButton">
+      Toggle animation
+    </button>
 
-<body>
-  <script type="module" src="/main.js"></script>
-  <button style="position: fixed; left: 200px; z-index: 2" id="playButton">Toggle animation</button>
-</body>
-
+    <div style="position: fixed; left: 0; bottom: 0; z-index: 2">
+      <textarea name="Text1" cols="40" rows="5" id="text-input"></textarea>
+      <button id="text-submit-button">Submit</button>
+    </div>
+  </body>
 </html>
