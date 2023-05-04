@@ -44,7 +44,7 @@ function init() {
   new GLTFLoader()
     .setKTX2Loader(ktx2Loader)
     .setMeshoptDecoder(MeshoptDecoder)
-    .load('./facecap.glb', (gltf) => {
+    .load('/facecap.glb', (gltf) => {
 
       console.log(gltf)
 
